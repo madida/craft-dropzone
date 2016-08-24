@@ -21,16 +21,19 @@ class DropzoneService extends BaseApplicationComponent
 	 * @return String         The resulting HTML form
 	 */
 	public function form($config = array())
-	{	
+	{
 		$this->_includeDropzoneResources();
 
 		$actionUrl = UrlHelper::getActionUrl('dropzone/upload');
 
 		$form = "<form method=\"POST\" enctype=\"multipart/form-data\" class=\"dropzone\" action=\"{$actionUrl}\">";
 
-		if(isset($config['sourceId']))
-		{
-			$form .= "<input type=\"hidden\" name=\"sourceId\" value=\"{$config['sourceId']}\">";
+		if(isset($config['params'])) {
+			foreach ($config['params'] as $param) {
+				$key = $param[0];
+				$val = $param[1];
+				$form .= "<input type=\"hidden\" name=\"{$key}\" value=\"{$val}\">";
+			}
 		}
 
 		if(isset($config['allowAnonymous']))
@@ -60,7 +63,7 @@ class DropzoneService extends BaseApplicationComponent
         {
         	craft()->templates->includeCssResource('dropzone/css/themes/'. $pluginSettings['dropzoneTheme'] . '.css');
         }
-        
+
 	}
 
 }

@@ -16,16 +16,19 @@ class DropzoneController extends BaseController
 		$file = UploadedFile::getInstanceByName('file');
 
 		$folder = craft()->assets->findFolder(array(
-		    'sourceId' => $input['sourceId']
+		    'id' => $input['id']
 		));
+
+		if ($folder) {
+			$folderId = $input['id'];
+		}
 
 		craft()->assets->insertFileByLocalPath(
 		    $file->getTempName(),
 		    $file->getName(),
-		    $folder->id,
+		    $folderId,
 		    AssetConflictResolution::KeepBoth);
 
-		// DropzonePlugin::log($file->getName(), LogLevel::Info);
 		craft()->end();
 	}
 }
